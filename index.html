@@ -95,6 +95,18 @@
             }
         }
 
+        // Nonaktifkan klik kanan
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+});
+
+// Nonaktifkan fungsi keyboard seperti Ctrl+C, Ctrl+U, dan lainnya
+document.addEventListener("keydown", function(e) {
+  // Cek apakah tombol Ctrl ditekan bersama dengan tombol lain
+  if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P' || e.key === 'a' || e.key === 'A')) {
+    e.preventDefault();
+  }
+
         // Mendapatkan live location secara terus-menerus
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(updateLocation, showError, {
