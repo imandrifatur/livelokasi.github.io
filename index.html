@@ -71,7 +71,7 @@
                 `Gua Disini Bro: <br> Latitude: ${lat.toFixed(6)}, Longitude: ${lon.toFixed(6)} <br> Akurasi: ${accuracy} meter`;
 
             // Memperbarui posisi marker di peta
-            marker.setLatLng([lat, lon]).bindPopup("Anda di sini!").openPopup();
+            marker.setLatLng([lat, lon]).bindPopup("Gua Disini Bro").openPopup();
 
             // Memperbesar peta ke posisi saat ini
             map.setView([lat, lon], 13);
