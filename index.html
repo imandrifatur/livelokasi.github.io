@@ -40,8 +40,8 @@
 <body>
 
     <header>
-        <h1>Live Location dengan Peta (GPS)</h1>
-        <p>Melacak posisi Anda secara langsung menggunakan GPS dan menampilkannya di peta.</p>
+        <h1>Live Location</h1>
+        <p>Melacak posisi Anda secara langsung</p>
     </header>
 
     <div id="locationInfo">Mendapatkan lokasi Anda...</div>
@@ -68,7 +68,7 @@
 
             // Menampilkan posisi dalam bentuk teks
             document.getElementById('locationInfo').innerHTML = 
-                `Posisi Anda: <br> Latitude: ${lat.toFixed(6)}, Longitude: ${lon.toFixed(6)} <br> Akurasi: ${accuracy} meter`;
+                `Gua Disini Bro: <br> Latitude: ${lat.toFixed(6)}, Longitude: ${lon.toFixed(6)} <br> Akurasi: ${accuracy} meter`;
 
             // Memperbarui posisi marker di peta
             marker.setLatLng([lat, lon]).bindPopup("Anda di sini!").openPopup();
