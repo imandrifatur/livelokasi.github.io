@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Location dengan Peta (GPS)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        #locationInfo {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        @media (max-width: 600px) {
+            #map {
+                height: 300px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+    <header>
+        <h1>Live Location dengan Peta (GPS)</h1>
+        <p>Melacak posisi Anda secara langsung menggunakan GPS dan menampilkannya di peta.</p>
+    </header>
+
+    <div id="locationInfo">Mendapatkan lokasi Anda...</div>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Inisialisasi peta dengan Leaflet.js
+        var map = L.map('map').setView([0, 0], 13); // Awal peta dengan posisi [0, 0]
+
+        // Menambahkan layer peta (gunakan OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+        }).addTo(map);
+
+        // Menambahkan marker awal
+        var marker = L.marker([0, 0]).addTo(map);
+
+        // Fungsi untuk memperbarui lokasi secara langsung
+        function updateLocation(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var accuracy = position.coords.accuracy;
+
+            // Menampilkan posisi dalam bentuk teks
+            document.getElementById('locationInfo').innerHTML = 
+                `Posisi Anda: <br> Latitude: ${lat.toFixed(6)}, Longitude: ${lon.toFixed(6)} <br> Akurasi: ${accuracy} meter`;
+
+            // Memperbarui posisi marker di peta
+            marker.setLatLng([lat, lon]).bindPopup("Anda di sini!").openPopup();
+
+            // Memperbesar peta ke posisi saat ini
+            map.setView([lat, lon], 13);
+        }
+
+        // Menangani kesalahan geolokasi
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("Pengguna menolak permintaan geolokasi.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Informasi lokasi tidak tersedia.");
+                    break;
+                case error.TIMEOUT:
+                    alert("Permintaan untuk mendapatkan lokasi pengguna time out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("Terjadi kesalahan yang tidak diketahui.");
+                    break;
+            }
+        }
+
+        // Mendapatkan live location secara terus-menerus
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(updateLocation, showError, {
+                enableHighAccuracy: true,  // Aktifkan akurasi tinggi (GPS)
+                timeout: 10000,  // Timeout setelah 10 detik
+                maximumAge: 0     // Jangan menggunakan cache, selalu ambil data baru
+            });
+        } else {
+            alert("Geolocation tidak didukung oleh browser ini.");
+        }
+    </script>
+
+</body>
+</html>
